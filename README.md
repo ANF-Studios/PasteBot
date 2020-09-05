@@ -21,4 +21,4 @@ After downloading this archive, you can restore the packages if you do not have 
 
 Still need help? Ask me in the [support server](https://discord.gg/fKWpK7A)
 
-*if you want to add it in a server not owned by you, make sure that you have permssion `manager Server`
+*if you want to add it in a server not owned by you, make sure that you have permssion `Manager Server`
