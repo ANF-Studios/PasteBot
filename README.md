@@ -2,7 +2,7 @@
  A simple Discord Bot that uses PasteMyst to paste code on https://paste.myst.rs and runs on Discord .Net 2.2.0
 
 ## History
-I was impressed by [PasteMtst](https://paste.myst.rs) and wanted to use it in my own bot for my [Discord Server](https://discord.gg/fKWpK7A); the code for that was hard and the only way to get the source was [Brackeys Bot](https://github.com/YilianSource/brackeys-bot). They however had their own custom code which is hard to understand, at least for beginners. So I created the most simple bot that has only one command and uses PasteMyst. There is no actual bot for this purpose however, only the source code for it. So you can feel free to fork it.
+I was impressed by [PasteMyst](https://paste.myst.rs) and wanted to use it in my own bot for my [Discord Server](https://discord.gg/fKWpK7A); the code for that was hard and the only way to get the source was [Brackeys Bot](https://github.com/YilianSource/brackeys-bot). They however had their own custom code which is hard to understand, at least for beginners. So I created the most simple bot that has only one command and uses PasteMyst. There is no actual bot for this purpose however, only the source code for it. So you can feel free to fork it.
 
 ## Usage
 After downloading this archive, you can restore the packages if you do not have them already `dotnet restore`. Oh and, just make sure that you have all the required items to run this command. For example in VS Code, you will need to install [.Net Runtime](https://dotnet.microsoft.com/download) and the [C# Extension](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp). Then you can use `dotnet run` to open it. But before than, make sure that you insert your bot's token from the [Discord Developer Dashboard](https://discord.com/developers/). If you are completely new, you can check out the [guide](https://github.com/ANF-Studios/PasteBot/#guide)
@@ -20,4 +20,5 @@ After downloading this archive, you can restore the packages if you do not have 
 8- Enjoy and control the source code
 
 Still need help? Ask me in the [support server](https://discord.gg/fKWpK7A)
+
 *if you want to add it in a server not owned by you, make sure that you have permssion `manager Server`
