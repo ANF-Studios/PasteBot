@@ -1,6 +1,8 @@
 # PasteBot
  A simple Discord Bot that uses PasteMyst to paste code on https://paste.myst.rs and runs on Discord .Net 2.2.0
 
+## ⚠ There is a new [project](https://github.com/ANF-Studios/PasteBot/projects/1) going on and everything is going to change ⚠
+
 ## History
 I was impressed by [PasteMyst](https://paste.myst.rs) and wanted to use it in my own bot for my [Discord Server](https://discord.gg/fKWpK7A); the code for that was hard and the only way to get the source was [Brackeys Bot](https://github.com/YilianSource/brackeys-bot). They however had their own custom code which is hard to understand, at least for beginners. So I created the most simple bot that has only one command and uses PasteMyst. There is no actual bot for this purpose however, only the source code for it. So you can feel free to fork it.
 
