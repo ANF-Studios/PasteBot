@@ -1,0 +1,3 @@
+[submodule "thirdparty/DisCPP"]
+	path = thirdparty/DisCPP
+	url = https://github.com/DisCPP/DisCPP.git
