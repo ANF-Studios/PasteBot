@@ -4,7 +4,7 @@
 #include <discpp/client_config.h>
 
 int main(int argc, const char* argv[]) {
-	auto* config = new discpp::ClientConfig({"!"});
+	auto* config = new discpp::ClientConfig({"pb"});
 	discpp::Client bot{ "TOKEN_HERE", config };
 
 	discpp::Command ping_command("ping", "Quick example of a command", {}, [](discpp::Context ctx) {
