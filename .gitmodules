@@ -1,3 +1,6 @@
 [submodule "thirdparty/DisCPP"]
-	path = thirdparty/DisCPP
+	path = CPP/thirdparty/DisCPP
 	url = https://github.com/DisCPP/DisCPP.git
+[submodule "Java-Discord-Bot-Template"]
+	path = Java/Java-Discord-Bot-Template
+	url = https://github.com/lucasstarsz/Java-Discord-Bot-Template
