@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using PasteMystNet;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace PasteBot
@@ -57,6 +58,9 @@ namespace PasteBot
             if (message.Author.IsBot || message.Author.IsWebhook || message == null) return;
 
             int argPos = 0;
+            if (message.ToString().HasCodeblockFormat())
+                PasteMyst.PasteCodeblock(message.ToString().ExtractCodeblockContent());
+
             if (message.HasStringPrefix("pb ", ref argPos))
             {
                 var result = await command.ExecuteAsync(context, argPos, service);
@@ -70,96 +74,36 @@ namespace PasteBot
             Console.WriteLine(message.ToString());
             return Task.CompletedTask;
         }
+    }
 
-        [Serializable]
-        public struct PasteMystCreateInfo
+    static class PasteMyst
+    {
+        public static void PasteCodeblock(string discordMessage)
         {
-            [JsonPropertyName("code")]
-            public string Code { get; set; }
-            [JsonPropertyName("expiresIn")]
-            public string ExpiresIn { get; set; }
-        }
-
-        [Serializable]
-        public struct PasteMystResultInfo
-        {
-            [JsonPropertyName("id")]
-            public string ID { get; set; }
-            [JsonPropertyName("createdAt")]
-            public long CreatedAt { get; set; }
-            [JsonPropertyName("expiresAt")]
-            public string ExpiresAt { get; set; }
-            [JsonPropertyName("code")]
-            public string Code { get; set; }
-        }
-
-        private const string API_BASEPOINT = "https://paste.myst.rs/api/";
-        private const string PASTEMYST_BASE_URL = "https://paste.myst.rs/";
-
-        private static readonly Regex _codeblockRegex = new Regex(@"^(?:\`){1,3}(\w+?(?:\n))?([^\`]*)\n?(?:\`){1,3}$", RegexOptions.Singleline);
-
-        private async Task CheckMessage(SocketMessage sm)
-        {
-            if (!(sm is SocketUserMessage msg) || msg.Author.IsBot)
-                return;
-
-            int msgWrappedLineCount = msg.Content
-                .Split(new[] { '\n', '\r' })
-                .Select(l => (int)Math.Ceiling(l.Length / 47f)) // This could be turned into parameter, currently it's amount of characters that fit on mobile with 100% scale
-                .Sum();
-
-            if (HasCodeblockFormat(msg.Content))
+            var paste = new PasteMystPasteForm
             {
-                string url = await PasteMessage(msg);
-                await msg.DeleteAsync();
-
-                var SuccessfullyPastes = new EmbedBuilder()
-                .WithColor(Color.Green)
-                .WithAuthor(msg.Author.Username, msg.Author.GetAvatarUrl())
-                .WithDescription($"Massive code pasted. View it [here]({url})")
-                .WithFooter("Powered by PasteMyst")
-                .Build();
-
-                await msg.Channel.SendMessageAsync(embed: SuccessfullyPastes);
-            }
-        }
-
-        public async Task<string> PasteMessage(IMessage msg)
-        {
-            string code = msg.Content;
-            if (HasCodeblockFormat(code))
-            {
-                code = ExtractCodeblockContent(code);
-            }
-
-            PasteMystCreateInfo createInfo = new PasteMystCreateInfo
-            {
-                Code = HttpUtility.UrlPathEncode(code),
-                ExpiresIn = "never"
+                ExpireDuration = PasteMystExpiration.OneYear,
+                Pasties = new[]
+                {
+                    new PasteMystPastyForm
+                    {
+                        Language = "Autodetect",
+                        Code = ExtractCodeblockContent(discordMessage)
+                    }
+                }
             };
-
-            HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(API_BASEPOINT);
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Connection.Add(HttpMethod.Post.ToString().ToUpper());
-
-            StringContent content = new StringContent(JsonSerializer.Serialize(createInfo), Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await httpClient.PostAsync("paste", content);
-            response.EnsureSuccessStatusCode();
-
-            string json = await response.Content.ReadAsStringAsync();
-            PasteMystResultInfo result = JsonSerializer.Deserialize<PasteMystResultInfo>(json);
-            Uri pasteUri = new Uri(new Uri(PASTEMYST_BASE_URL), result.ID);
-            return pasteUri.ToString();
+            paste.PostPasteAsync();
         }
-
-        private static bool HasCodeblockFormat(string content)
-            => _codeblockRegex.IsMatch(content);
-        private static string ExtractCodeblockContent(string content)
+        private static readonly Regex codeblockRegex = new Regex(
+            @"^(?:\`){1,3}(\w+?(?:\n))?([^\`]*)\n?(?:\`){1,3}$",
+            RegexOptions.Singleline);
+        public static bool HasCodeblockFormat(this string content)
+            => codeblockRegex.IsMatch(content);
+        public static string ExtractCodeblockContent(this string content)
             => ExtractCodeblockContent(content, out string _);
         private static string ExtractCodeblockContent(string content, out string format)
         {
-            Match m = _codeblockRegex.Match(content);
+            Match m = codeblockRegex.Match(content);
             if (m.Success)
             {
                 // If 2 capture is present, the message only contains content, no format
