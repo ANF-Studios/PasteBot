@@ -1,0 +1,8 @@
+build
+*.pyc
+venv
+ixsnake/ixsnake/.certs/
+site/
+ws/.certs/
+ws/.srl
+ixhttpd

@@ -1,0 +1,26 @@
+# Don't track content of these folders
+.vscode/*
+CMakeFiles/*
+.vs/*
+out/*
+latex/*
+.idea/*
+cmake-build-debug-w10/*
+cmake-build-debug-wsl/*
+cmake-build-debug/
+
+# Compiled source #
+###################
+*.txt
+!*CMakeLists.txt
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+#*.7z
+#*.dmg
+*.tex
+*.eps
+*.sty
+CMakeSettings.json
